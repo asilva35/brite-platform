@@ -1,0 +1,16 @@
+export const BASE_RATES = {
+    CASEMENT: 0.50,    // PRICE PER SQUARE FOOT
+    WINDOW_WALL: 1.20,
+    PATIO_DOOR: 0.85,
+};
+
+export const GLASS_MULTIPLIERS = {
+    DOUBLE: 1.0,
+    TRIMAX: 1.4, // TECHNOLOGY OF TRIPLE GLASS FOR MAGIC
+};
+
+export const OPTION_COSTS = {
+    THERMAL_BLIND: 185.00,
+    SOLAR_SHADE: 120.00,
+    INSECT_SCREEN: 45.00,
+};
