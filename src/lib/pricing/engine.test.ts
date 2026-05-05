@@ -22,6 +22,26 @@ describe('Brite 2.0 Pricing Engine', () => {
         expect(result.marginPercentage.toNumber()).toBeCloseTo(16.67);
     });
 
+    it('should calculate the base cost correctly for a standard window & Thermal Blind', () => {
+        const result = calculateLineItemPricing({
+            width: 20,
+            height: 20,
+            productType: 'CASEMENT',
+            glassType: 'DOUBLE',
+            options: ["THERMAL_BLIND"],
+            markupPercentage: 20
+        });
+
+        // Cost: (20*20) * 0.5 + 185 = 385
+        // Price (20% markup): 385 * 1.2 = 462
+        // Margin: 462 - 385 = 77
+        // Margin Percentage: (77 / 462) * 100 = 16.67%
+        expect(result.unitCost.toNumber()).toBe(385);
+        expect(result.unitPrice.toNumber()).toBe(462);
+        expect(result.marginAmount.toNumber()).toBe(77);
+        expect(result.marginPercentage.toNumber()).toBeCloseTo(16.67);
+    });
+
     it('should apply the extra cost of Trimax technology', () => {
         const result = calculateLineItemPricing({
             width: 10,

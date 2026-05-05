@@ -69,7 +69,7 @@ model LineItem {
   
   // Technical Configuration
   options       Json     // { glass: "Trimax", color: "Slate", blinds: true }
-  bomData       Json?    // Desglose de materiales calculado para Phase 2
+  bomData       Json?    // Material breakdown for production - Phase 2
   
   quoteId       String
   quote         Quote    @relation(fields: [quoteId], references: [id], onDelete: Cascade)

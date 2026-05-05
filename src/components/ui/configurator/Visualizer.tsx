@@ -2,7 +2,7 @@
 import { useConfiguratorStore } from '@/store/useConfiguratorStore';
 
 export const Visualizer = () => {
-    const { width, height, hasThermalBlind, productType } = useConfiguratorStore();
+    const { width, height, hasThermalBlind, hasSolarShades, hasInsectScreen, productType } = useConfiguratorStore();
 
     // Dynamic scaling: 1 inch = 10 SVG units
     const strokeWidth = 12;
@@ -45,6 +45,40 @@ export const Visualizer = () => {
                                     height="8"
                                     fill="white"
                                     fillOpacity="0.4"
+                                />
+                            ))}
+                        </g>
+                    )}
+
+                    {/* 2.1 SOLAR SHADES - Conditional layer */}
+                    {hasSolarShades && (
+                        <g>
+                            {[...Array(Math.floor(height / 2))].map((_, i) => (
+                                <rect
+                                    key={i}
+                                    x={strokeWidth + 2}
+                                    y={strokeWidth + (i * 20)}
+                                    width={(width * 10) - 4}
+                                    height="8"
+                                    fill="gray"
+                                    fillOpacity="0.9"
+                                />
+                            ))}
+                        </g>
+                    )}
+
+                    {/* 2.2 INSECT SCREEN - Conditional layer */}
+                    {hasInsectScreen && (
+                        <g>
+                            {[...Array(Math.floor(height / 2))].map((_, i) => (
+                                <rect
+                                    key={i}
+                                    x={strokeWidth + 2}
+                                    y={strokeWidth + (i * 20)}
+                                    width={(width * 10) - 4}
+                                    height="8"
+                                    fill="red"
+                                    fillOpacity="0.2"
                                 />
                             ))}
                         </g>

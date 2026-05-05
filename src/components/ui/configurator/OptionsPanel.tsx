@@ -28,20 +28,30 @@ export const OptionsPanel = () => {
             height: store.height,
             productType: store.productType,
             glassType: store.glassType,
-            options: store.hasThermalBlind ? ['THERMAL_BLIND'] : [],
+            options: [
+                store.hasThermalBlind && 'THERMAL_BLIND',
+                store.hasSolarShades && 'SOLAR_SHADE',
+                store.hasInsectScreen && 'INSECT_SCREEN'
+            ].filter(Boolean) as Array<"THERMAL_BLIND" | "SOLAR_SHADE" | "INSECT_SCREEN">,
             markupPercentage: 20, // Markup base suggested
         });
     }, [store]);
 
     // 2. Status transition handler
     const handleStatusChange = (nextStatus: OrderStatus) => {
+        if (!currentStatus && nextStatus === OrderStatus.QUOTE && currentRole === UserRole.SALES_REP) {
+            setCurrentStatus(nextStatus);
+            //alert(`Status updated to: ${nextStatus}`);
+            return;
+        }
+
         const validation = canTransition(currentStatus, nextStatus, currentRole);
 
         if (validation.success) {
             setCurrentStatus(nextStatus);
-            alert(`Status updated to: ${nextStatus}`);
+            //alert(`Status updated to: ${nextStatus}`);
         } else {
-            alert(`Error: ${validation.error}, current role: ${currentRole}`);
+            alert(`Error: ${validation.error}`);
         }
     };
 
@@ -70,7 +80,7 @@ export const OptionsPanel = () => {
                         <div className="space-y-1">
                             <Label>Current Status</Label>
                             <div className="h-10 flex items-center px-3 bg-white border rounded-md font-bold text-sm text-blue-600">
-                                {currentStatus}
+                                {currentStatus ? currentStatus : "N/A"}
                             </div>
                         </div>
                     </div>
@@ -119,6 +129,28 @@ export const OptionsPanel = () => {
                             onCheckedChange={(v) => store.setOption('hasThermalBlind', v)}
                         />
                     </div>
+
+                    <div className="flex items-center justify-between p-3 border rounded-md">
+                        <div className="space-y-0.5">
+                            <Label>Solar Shades</Label>
+                            <p className="text-xs text-zinc-500">Energy efficient solar shades</p>
+                        </div>
+                        <Switch
+                            checked={store.hasSolarShades}
+                            onCheckedChange={(v) => store.setOption('hasSolarShades', v)}
+                        />
+                    </div>
+
+                    <div className="flex items-center justify-between p-3 border rounded-md">
+                        <div className="space-y-0.5">
+                            <Label>Insect Screen</Label>
+                            <p className="text-xs text-zinc-500">Insect screens</p>
+                        </div>
+                        <Switch
+                            checked={store.hasInsectScreen}
+                            onCheckedChange={(v) => store.setOption('hasInsectScreen', v)}
+                        />
+                    </div>
                 </div>
 
                 {/* SECTION: FINANCIAL SUMMARY (Pricing Engine) */}
@@ -133,7 +165,15 @@ export const OptionsPanel = () => {
                     </div>
 
                     <div className="grid grid-cols-2 gap-2 mt-4">
-                        <Button
+                        <Select value={currentStatus || undefined} onValueChange={(v) => handleStatusChange(v as OrderStatus)}>
+                            <SelectTrigger><SelectValue /></SelectTrigger>
+                            <SelectContent>
+                                {Object.values(OrderStatus).map(status => (
+                                    <SelectItem key={status} value={status}>{status}</SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                        {/* <Button
                             variant="outline"
                             onClick={() => handleStatusChange(OrderStatus.REMEASURE)}
                             className="w-full"
@@ -146,7 +186,7 @@ export const OptionsPanel = () => {
                             onClick={() => handleStatusChange(OrderStatus.READY_FOR_PROD)}
                         >
                             Approve Production
-                        </Button>
+                        </Button> */}
                     </div>
                 </div>
             </CardContent>

@@ -16,12 +16,12 @@ export const ALLOWED_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
 // Permissions by Role (Who can move to which state)
 export const ROLE_PERMISSIONS: Record<OrderStatus, UserRole[]> = {
     [OrderStatus.QUOTE]: [UserRole.SALES_REP, UserRole.ADMIN],
-    [OrderStatus.REMEASURE]: [UserRole.PM, UserRole.ADMIN],
-    [OrderStatus.PROD_REVIEW]: [UserRole.PRODUCTION, UserRole.ADMIN],
+    [OrderStatus.REMEASURE]: [UserRole.SALES_REP, UserRole.ADMIN],
+    [OrderStatus.PROD_REVIEW]: [UserRole.PM, UserRole.ADMIN],
     [OrderStatus.READY_FOR_PROD]: [UserRole.PRODUCTION, UserRole.ADMIN],
     [OrderStatus.IN_PRODUCTION]: [UserRole.PRODUCTION, UserRole.ADMIN],
     [OrderStatus.READY_TO_SHIP]: [UserRole.PRODUCTION, UserRole.ADMIN],
-    [OrderStatus.OUT_FOR_INST]: [UserRole.ADMIN],
+    [OrderStatus.OUT_FOR_INST]: [UserRole.PRODUCTION, UserRole.ADMIN],
     [OrderStatus.INSTALLED]: [UserRole.ADMIN, UserRole.PM],
     [OrderStatus.CANCELLED]: [UserRole.ADMIN, UserRole.SALES_REP]
 };
