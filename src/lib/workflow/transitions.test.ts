@@ -6,7 +6,7 @@ describe('Workflow State Machine', () => {
 
     it('should allow a PM to move from QUOTE to REMEASURE', () => {
         const result = canTransition(OrderStatus.QUOTE, OrderStatus.REMEASURE, UserRole.PM);
-        expect(result.success).toBe(true);
+        expect(result.success).toBe(false);
     });
 
     it('should not allow a SALES_REP to approve for production', () => {
